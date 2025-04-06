@@ -18,14 +18,18 @@ namespace backend.Services
             _cardService = cardService; 
         }
 
-        public async Task<Board?> GetBoardByIdAsync(int id)
+        public async Task<Board?> GetBoardByIdAsync(int id, int userId)
         {
             var board= await _boardRepository.GetBoardByIdAsync(id);
             if (board == null)
             {
                 throw new NotFoundException("No board found", "For id: "+id);
             }
-                var columns = await _columnService.GetColumnsByBoardIdAsync(id);
+            if (board.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to access this board.");
+            }
+            var columns = await _columnService.GetColumnsByBoardIdAsync(id);
 
                 if (columns == null)
                 {
@@ -48,11 +52,12 @@ namespace backend.Services
 
         }
 
-        public async Task<Board?> CreateBoardAsync(BoardRequest request)
+        public async Task<Board?> CreateBoardAsync(BoardRequest request, int userId)
         {
             var board = new Board
             {
-                Title = request.Title
+                Title = request.Title,
+                UserId=userId
             };
 
             var created= await _boardRepository.CreateBoardAsync(board);
@@ -78,9 +83,9 @@ namespace backend.Services
             return updated;
         }
 
-        public async Task<ICollection<Board>?> GetAllBoards()
+        public async Task<ICollection<Board>?> GetAllBoards(int userId)
         {
-            var boards = await _boardRepository.GetAllBoardsAsync();
+            var boards = await _boardRepository.GetAllBoardsAsync(userId);
             if (boards == null)
             {
                 throw new BadHttpRequestException("No boards"); 

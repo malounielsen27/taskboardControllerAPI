@@ -2,10 +2,13 @@
 using backend.Exceptions;
 using backend.Models;
 using backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace backend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BoardController : ControllerBase
@@ -15,14 +18,28 @@ namespace backend.Controllers
         {
             _boardService = boardService;
         }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBoard([FromRoute] int id)
         {
             try
             {
-                var board = await _boardService.GetBoardByIdAsync(id);
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+                if (userIdClaim == null)
+                {
+                    throw new UnauthorizedAccessException("No user id found in token");
+                }
+
+                int userId = int.Parse(userIdClaim);
+                var board = await _boardService.GetBoardByIdAsync(id, userId);
                 return Ok(board);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized(e.Message); 
             }
             catch (NotFoundException e)
             {
@@ -39,13 +56,34 @@ namespace backend.Controllers
 
         }
 
+       /* [HttpGet]
+        public async Task<IActionResult> GetFirstBoard()
+        {
+
+        }*/
+        
         [HttpGet]
         public async Task<IActionResult> GetAllBoards()
         {
             try
             {
-                var boards = await _boardService.GetAllBoards();
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+                if (userIdClaim == null)
+                {
+                    throw new UnauthorizedAccessException("No user id found in token");
+                }
+
+                int userId = int.Parse(userIdClaim);
+               
+                var boards = await _boardService.GetAllBoards(userId);
                 return Ok(boards ?? new List<Board>());
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized(e.Message);
             }
             catch (BadHttpRequestException e)
             {
@@ -56,7 +94,7 @@ namespace backend.Controllers
                 return StatusCode(500, "Error: " + e.Message);
             }
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> CreateBoard(BoardRequest request)
         {
@@ -64,25 +102,37 @@ namespace backend.Controllers
             {
                 if (request == null)
                 {
-                    throw new BadHttpRequestException("Request was null"); 
+                    throw new BadHttpRequestException("Request was null");
                 }
-                var created = await _boardService.CreateBoardAsync(request);
-                return Ok(created); 
-                
+               
+             
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+                if (userIdClaim == null)
+                {
+                    throw new UnauthorizedAccessException("No user id found in token");
+                }
+
+                int userId = int.Parse(userIdClaim);
+                var created = await _boardService.CreateBoardAsync(request, userId);
+                return Ok(created);
+             
+
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized(e.Message);
             }
             catch (BadHttpRequestException e)
             {
-                Console.WriteLine(e.Message);
-                return BadRequest(); 
+                return BadRequest(e.Message);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(500, "Error"); 
+                return StatusCode(500, "Error: " + e.Message);
             }
-            
-            
-
         }
 
         [HttpPut ("{id}")]
@@ -93,15 +143,19 @@ namespace backend.Controllers
                 var updated = await _boardService.UpdateBoardAsync(request.Title, id);
                 return Ok(updated);
             }
-            catch(BadHttpRequestException e)
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized(e.Message);
+            }
+            catch (BadHttpRequestException e)
             {
                 return BadRequest(e.Message);
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error: "+e.Message); 
+                return StatusCode(500, "Error: " + e.Message);
             }
-            
+
         }
 
         [HttpDelete ("{id}")]
@@ -112,13 +166,13 @@ namespace backend.Controllers
                 await _boardService.DeleteBoard(id);
                 return Ok(); 
             }
-            catch(NotFoundException e)
+            catch (UnauthorizedAccessException e)
             {
-                return NotFound(new
-                {
-                    e.Message,
-                    e.DetailInfo
-                });
+                return Unauthorized(e.Message);
+            }
+            catch (BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception e)
             {

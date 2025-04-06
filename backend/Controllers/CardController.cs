@@ -29,7 +29,7 @@ namespace backend.Controllers
             } 
             catch(Exception e)
             {
-                return StatusCode(500, "Dontä"); 
+                return StatusCode(500, e.Message); 
             }
             
         }

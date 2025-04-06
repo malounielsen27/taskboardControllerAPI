@@ -9,7 +9,7 @@ namespace backend.Repositories
 
         Task<Board?> UpdateBoardAsync(string title, int id);
 
-        Task<ICollection<Board>?> GetAllBoardsAsync();
+        Task<ICollection<Board>?> GetAllBoardsAsync(int userId);
         Task DeleteBoard(int id); 
     }
 }

@@ -13,5 +13,7 @@ namespace backend.Models
 
         public DbSet<Card> Cards { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
     }
 }

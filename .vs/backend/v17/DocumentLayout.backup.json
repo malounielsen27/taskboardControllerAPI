@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Malou\\source\\repos\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|c:\\users\\malou\\source\\repos\\backend\\backend\\repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|solutionrelative:backend\\repositories\\boardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|c:\\users\\malou\\source\\repos\\backend\\backend\\controllers\\boardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|solutionrelative:backend\\controllers\\boardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|c:\\users\\malou\\source\\repos\\backend\\backend\\services\\boardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|solutionrelative:backend\\services\\boardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|c:\\users\\malou\\source\\repos\\backend\\backend\\exceptions\\notfoundexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|solutionrelative:backend\\exceptions\\notfoundexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|c:\\users\\malou\\source\\repos\\backend\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34317AAB-60C2-42C3-98F8-B703968BD3AD}|backend\\backend.csproj|solutionrelative:backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -32,36 +32,35 @@
               "RelativeDocumentMoniker": "backend\\Services\\BoardService.cs",
               "ToolTip": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Services\\BoardService.cs",
               "RelativeToolTip": "backend\\Services\\BoardService.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAgwDMAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAkwBoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T18:23:15.716Z",
+              "WhenOpened": "2025-04-06T08:07:52.612Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BoardRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Repositories\\BoardRepository.cs",
-              "RelativeDocumentMoniker": "backend\\Repositories\\BoardRepository.cs",
-              "ToolTip": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Repositories\\BoardRepository.cs",
-              "RelativeToolTip": "backend\\Repositories\\BoardRepository.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAkwBYAAAAqAAAAAAAAAA==",
+              "Title": "BoardController.cs",
+              "DocumentMoniker": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Controllers\\BoardController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\BoardController.cs",
+              "ToolTip": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Controllers\\BoardController.cs",
+              "RelativeToolTip": "backend\\Controllers\\BoardController.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAgwD4AAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T18:23:11.316Z",
+              "WhenOpened": "2025-04-06T08:08:53.258Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "NotFoundException.cs",
-              "DocumentMoniker": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Exceptions\\NotFoundException.cs",
-              "RelativeDocumentMoniker": "backend\\Exceptions\\NotFoundException.cs",
-              "ToolTip": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Exceptions\\NotFoundException.cs",
-              "RelativeToolTip": "backend\\Exceptions\\NotFoundException.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAvAAAAAAAAAA==",
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Malou\\source\\repos\\backend\\backend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "backend\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAYwDEAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T18:21:17.274Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T12:13:22.444Z"
             }
           ]
         }

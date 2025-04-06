@@ -31,15 +31,14 @@ namespace backend.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Board>?> GetAllBoardsAsync()
+        public async Task<ICollection<Board>?> GetAllBoardsAsync(int userId)
         {
-            return await _context.Boards.ToListAsync(); 
+            return await _context.Boards.Where(b => b.UserId == userId).ToListAsync(); 
         }
 
-        public async Task<Board?> GetBoardByIdAsync(int id)
+        public async Task<Board?> GetBoardByIdAsync(int userId)
         {
-            var board = await _context.Boards.FindAsync(id);
-            return board; 
+            return await _context.Boards.FindAsync(userId);
         }
 
         public async Task<Board?> UpdateBoardAsync(string Title, int id)

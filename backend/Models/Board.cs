@@ -8,6 +8,10 @@ namespace backend.Models
         public required string Title { get; set; }
        
         public ICollection<Column> Columns { get; set;  } = new List<Column>();
-        
+
+        public int UserId { get; set; }
+        [JsonIgnore]
+        public User? User { get; set; } 
+
     }
 }
