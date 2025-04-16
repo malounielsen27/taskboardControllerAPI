@@ -89,18 +89,5 @@ namespace backend.Services
     }
 }
 
-            /*
-            public async Task<string> GetAccessTokenAsync()
-            {
-            var tokenEndpoint = "https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token";
-            var clientId = "your-client-id";
-            var clientSecret = "your-client-secret";
-            var scope = "https://graph.microsoft.com/.default";
-
-            var content = new FormUrlEncodedContent(new[]
-            {
-            new KeyValuePair<string, string>("client_id", clientId),
-            new KeyValuePair<string, string>("client_secret", client); 
-        }
-    }*/
+           
 
