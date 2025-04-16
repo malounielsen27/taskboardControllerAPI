@@ -4,7 +4,6 @@ using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace backend.Controllers
 {
@@ -14,9 +13,11 @@ namespace backend.Controllers
     public class BoardController : ControllerBase
     {
         private readonly IBoardService _boardService;
-        public BoardController(IBoardService boardService)
+        private readonly IUserService _userService; 
+        public BoardController(IBoardService boardService, IUserService userService)
         {
             _boardService = boardService;
+            _userService = userService; 
         }
         
         [HttpGet("{id}")]
@@ -25,15 +26,7 @@ namespace backend.Controllers
             try
             {
                 var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var handler = new JwtSecurityTokenHandler();
-                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-                var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-                if (userIdClaim == null)
-                {
-                    throw new UnauthorizedAccessException("No user id found in token");
-                }
-
-                int userId = int.Parse(userIdClaim);
+                int userId = _userService.Authorize(token);
                 var board = await _boardService.GetBoardByIdAsync(id, userId);
                 return Ok(board);
             }
@@ -55,29 +48,39 @@ namespace backend.Controllers
             }
 
         }
-
-       /* [HttpGet]
-        public async Task<IActionResult> GetFirstBoard()
-        {
-
-        }*/
         
-        [HttpGet]
-        public async Task<IActionResult> GetAllBoards()
+        [HttpGet("first-board")]
+        public async Task<IActionResult> GetFirstBoard()
         {
             try
             {
                 var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var handler = new JwtSecurityTokenHandler();
-                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-                var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-                if (userIdClaim == null)
-                {
-                    throw new UnauthorizedAccessException("No user id found in token");
-                }
+                int userId = _userService.Authorize(token);
+                var board = await _boardService.GetFirstBoardId(userId);
+                return Ok(board);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                return Unauthorized(e.Message);
+            }
+            catch (BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error: " + e.Message);
+            }
+        }
 
-                int userId = int.Parse(userIdClaim);
-               
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAllBoards([FromHeader(Name = "Authorization")] string authorization)
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                int userId = _userService.Authorize(token);
                 var boards = await _boardService.GetAllBoards(userId);
                 return Ok(boards ?? new List<Board>());
             }
@@ -104,22 +107,11 @@ namespace backend.Controllers
                 {
                     throw new BadHttpRequestException("Request was null");
                 }
-               
-             
                 var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var handler = new JwtSecurityTokenHandler();
-                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-                var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-                if (userIdClaim == null)
-                {
-                    throw new UnauthorizedAccessException("No user id found in token");
-                }
-
-                int userId = int.Parse(userIdClaim);
+                int userId = _userService.Authorize(token);
                 var created = await _boardService.CreateBoardAsync(request, userId);
                 return Ok(created);
-             
-
+           
             }
             catch (UnauthorizedAccessException e)
             {

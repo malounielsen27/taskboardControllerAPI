@@ -1,11 +1,8 @@
-﻿using Azure.Core;
-using backend.Dtos;
+﻿using backend.Dtos;
 using backend.Models;
 using backend.Repositories;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -16,12 +13,12 @@ namespace backend.Services
     public class UserService : IUserService
     {
         private readonly IConfiguration _configuration;
-        private readonly IUserRepository _userRepository; 
+        private readonly IUserRepository _userRepository;
 
         public UserService(IConfiguration configuration, IUserRepository userRepository)
         {
             _configuration = configuration;
-            _userRepository = userRepository; 
+            _userRepository = userRepository;
         }
 
         public async Task<object> Login(UserRequest request)
@@ -38,7 +35,7 @@ namespace backend.Services
 
             var token = CreateToken(user);
 
-            return new { token, username=request.Username }; 
+            return new { token, username = request.Username };
         }
 
         public async Task<int> Register(UserRequest request)
@@ -46,7 +43,7 @@ namespace backend.Services
             var existingName = await _userRepository.GetByUsername(request.Username);
             if (existingName != null)
             {
-                throw new InvalidOperationException("Username already exist"); 
+                throw new InvalidOperationException("Username already exist");
             }
             var user = new User()
             {
@@ -56,7 +53,7 @@ namespace backend.Services
              .HashPassword(user, request.Password);
             user.PasswordHash = hashedPassword;
             return await _userRepository.Register(user);
-             
+
         }
 
         public string CreateToken(User user)
@@ -77,5 +74,33 @@ namespace backend.Services
                 );
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
+
+        public int Authorize(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+            var userIdClaim = jsonToken?.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+            if (userIdClaim == null)
+            {
+                throw new UnauthorizedAccessException("No user id found in token");
+            }
+            return int.Parse(userIdClaim);
+        }
     }
 }
+
+            /*
+            public async Task<string> GetAccessTokenAsync()
+            {
+            var tokenEndpoint = "https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token";
+            var clientId = "your-client-id";
+            var clientSecret = "your-client-secret";
+            var scope = "https://graph.microsoft.com/.default";
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+            new KeyValuePair<string, string>("client_id", clientId),
+            new KeyValuePair<string, string>("client_secret", client); 
+        }
+    }*/
+

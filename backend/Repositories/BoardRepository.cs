@@ -41,6 +41,11 @@ namespace backend.Repositories
             return await _context.Boards.FindAsync(userId);
         }
 
+        public async Task<int> GetBoardIdAsync(int userId)
+        {
+            return await _context.Boards.Where(c => c.UserId == userId).Select(c => c.Id).FirstOrDefaultAsync(); 
+        }
+
         public async Task<Board?> UpdateBoardAsync(string Title, int id)
         {
                 var updateBoard = await _context.Boards.FindAsync(id);

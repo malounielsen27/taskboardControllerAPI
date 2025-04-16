@@ -9,5 +9,6 @@ namespace backend.Services
 
         Task<int> Register(UserRequest request); 
         Task<object> Login(UserRequest request);
+        int Authorize(string token); 
     }
 }

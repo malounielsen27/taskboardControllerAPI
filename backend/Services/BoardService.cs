@@ -97,5 +97,18 @@ namespace backend.Services
         {
             await _boardRepository.DeleteBoard(id); 
         }
+
+        public async Task<Board> GetFirstBoardId(int userId)
+        {
+            int boardId=await _boardRepository.GetBoardIdAsync(userId);
+            var board= await GetBoardByIdAsync(boardId, userId);
+            if (board == null)
+            {
+                throw new Exception("No board found");//ResourceNotFoundException
+            }
+            return board; 
+        }
+
+
     }
 }
